@@ -26,7 +26,9 @@ function parseSymbol(symbol: string): { strike: number; side: 'call' | 'put'; ex
 
 export async function fetchBybit(asset: Asset): Promise<{ options: OptionData[]; expiries: string[]; underlyingPrice: number }> {
   const resp = await fetch(`/api/bybit/v5/market/tickers?category=option&baseCoin=${asset}`);
+  if (!resp.ok) throw new Error(`Bybit HTTP ${resp.status}`);
   const json = await resp.json();
+  if (json.error) throw new Error(json.error);
   const list: BybitTicker[] = json.result?.list || [];
 
   const expiries = new Set<string>();

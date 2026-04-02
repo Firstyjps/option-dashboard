@@ -13,28 +13,40 @@ const TARGETS = {
   '/api/okx': 'https://www.okx.com',
 };
 
-// API proxy routes
 for (const [prefix, target] of Object.entries(TARGETS)) {
   app.use(prefix, async (req, res) => {
     const url = target + req.url;
     try {
       const resp = await fetch(url, {
-        headers: { 'User-Agent': 'OptionsScanner/1.0', 'Accept': 'application/json' },
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'Accept': 'application/json',
+        },
       });
-      const data = await resp.text();
-      res.set('Content-Type', resp.headers.get('content-type') || 'application/json');
+
+      const contentType = resp.headers.get('content-type') || '';
+      const body = await resp.text();
+
+      // If exchange returns HTML instead of JSON (captcha/block page), return error JSON
+      if (contentType.includes('text/html') || body.trimStart().startsWith('<')) {
+        res.status(503).json({
+          error: `${prefix.replace('/api/', '')} returned non-JSON (possibly blocked)`,
+          code: resp.status,
+        });
+        return;
+      }
+
+      res.set('Content-Type', 'application/json');
       res.set('Cache-Control', 'public, max-age=5');
-      res.send(data);
+      res.send(body);
     } catch (err) {
       res.status(502).json({ error: err.message });
     }
   });
 }
 
-// Serve static files
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// SPA fallback
 app.get('{*path}', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
