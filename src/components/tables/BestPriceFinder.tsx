@@ -1,11 +1,11 @@
-import type { Exchange, OptionData, OptionSide } from '@/types/option';
+import type { Exchange, OptionData, SideFilter } from '@/types/option';
 import { EX_COLORS } from '@/constants/exchanges';
 import { colors, fonts, baseTable, baseTh, baseTd, baseTr } from '@/styles/theme';
 
 interface BestPriceFinderProps {
   data: OptionData[];
   selectedExchanges: Exchange[];
-  side: OptionSide;
+  side: SideFilter;
   underlyingPrice?: number;
 }
 
@@ -18,7 +18,7 @@ export function BestPriceFinder({ data, selectedExchanges, side, underlyingPrice
   const byStrike: Record<number, OptionData[]> = {};
   data
     .filter((d) =>
-      d.side === side &&
+      (side === 'both' || d.side === side) &&
       selectedExchanges.includes(d.exchange) &&
       d.strike >= minStrike &&
       d.strike <= maxStrike &&

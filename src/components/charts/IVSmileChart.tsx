@@ -1,13 +1,13 @@
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine,
 } from 'recharts';
-import type { Exchange, OptionData, OptionSide } from '@/types/option';
+import type { Exchange, OptionData, SideFilter } from '@/types/option';
 import { EX_COLORS } from '@/constants/exchanges';
 
 interface IVSmileChartProps {
   data: OptionData[];
   selectedExchanges: Exchange[];
-  side: OptionSide;
+  side: SideFilter;
 }
 
 const tooltipStyle = {
@@ -24,7 +24,7 @@ const tooltipStyle = {
 
 export function IVSmileChart({ data, selectedExchanges, side }: IVSmileChartProps) {
   const filtered = data.filter(
-    (d) => d.side === side && selectedExchanges.includes(d.exchange)
+    (d) => (side === 'both' || d.side === side) && selectedExchanges.includes(d.exchange)
   );
   if (!filtered.length) return null;
 

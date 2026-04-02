@@ -1,10 +1,10 @@
 import { create } from 'zustand';
-import type { Exchange, Asset, OptionSide, TabId, PositionLeg } from '@/types/option';
+import type { Exchange, Asset, SideFilter, TabId, PositionLeg } from '@/types/option';
 
 interface DashboardState {
   selectedAsset: Asset;
   selectedExchanges: Exchange[];
-  optionSide: OptionSide;
+  optionSide: SideFilter;
   activeTab: TabId;
   selectedStrike: number;
   selectedExpiry: string;
@@ -12,7 +12,7 @@ interface DashboardState {
 
   setSelectedAsset: (asset: Asset) => void;
   toggleExchange: (ex: Exchange) => void;
-  setOptionSide: (side: OptionSide) => void;
+  setOptionSide: (side: SideFilter) => void;
   setActiveTab: (tab: TabId) => void;
   setSelectedStrike: (strike: number) => void;
   setSelectedExpiry: (expiry: string) => void;

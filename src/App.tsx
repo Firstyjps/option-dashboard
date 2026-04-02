@@ -100,6 +100,7 @@ export default function App() {
           </span>
           <Badge color="#1DB954" active={optionSide === 'call'} onClick={() => setOptionSide('call')}>Calls</Badge>
           <Badge color="#ef4444" active={optionSide === 'put'} onClick={() => setOptionSide('put')}>Puts</Badge>
+          <Badge color="#a78bfa" active={optionSide === 'both'} onClick={() => setOptionSide('both')}>Both</Badge>
         </div>
 
         {/* Expiry Selector */}
@@ -187,7 +188,7 @@ export default function App() {
             {activeTab === 'iv' && (
               <div>
                 <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '16px' }}>
-                  IV Smile — {optionSide === 'call' ? 'Calls' : 'Puts'}
+                  IV Smile — {optionSide === 'both' ? 'Calls & Puts' : optionSide === 'call' ? 'Calls' : 'Puts'}
                 </div>
                 <IVSmileChart data={data} selectedExchanges={selectedExchanges} side={optionSide} />
                 <Legend exchanges={selectedExchanges} />
@@ -197,7 +198,7 @@ export default function App() {
             {activeTab === 'oi' && (
               <div>
                 <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '16px' }}>
-                  Open Interest by Strike — {optionSide === 'call' ? 'Calls' : 'Puts'}
+                  Open Interest by Strike — {optionSide === 'both' ? 'Calls & Puts' : optionSide === 'call' ? 'Calls' : 'Puts'}
                 </div>
                 <OIBarChart data={data} selectedExchanges={selectedExchanges} side={optionSide} />
                 <Legend exchanges={selectedExchanges} />

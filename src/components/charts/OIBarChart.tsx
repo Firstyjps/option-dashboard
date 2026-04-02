@@ -1,18 +1,18 @@
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
-import type { Exchange, OptionData, OptionSide } from '@/types/option';
+import type { Exchange, OptionData, SideFilter } from '@/types/option';
 import { EX_COLORS } from '@/constants/exchanges';
 
 interface OIBarChartProps {
   data: OptionData[];
   selectedExchanges: Exchange[];
-  side: OptionSide;
+  side: SideFilter;
 }
 
 export function OIBarChart({ data, selectedExchanges, side }: OIBarChartProps) {
   const filtered = data.filter(
-    (d) => d.side === side && selectedExchanges.includes(d.exchange)
+    (d) => (side === 'both' || d.side === side) && selectedExchanges.includes(d.exchange)
   );
 
   const strikes = [...new Set(filtered.map((d) => d.strike))].sort((a, b) => a - b);

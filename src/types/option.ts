@@ -1,6 +1,7 @@
 export type Exchange = 'Deribit' | 'Binance' | 'Bybit' | 'OKX';
 export type Asset = 'SOL' | 'BTC' | 'ETH';
 export type OptionSide = 'call' | 'put';
+export type SideFilter = 'call' | 'put' | 'both';
 export type TabId = 'best' | 'iv' | 'oi' | 'chain' | 'arbitrage' | 'position' | 'greeks';
 
 export interface OptionData {
